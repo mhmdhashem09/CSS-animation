@@ -1,0 +1,263 @@
+:root {
+  --black: #000;
+  --blue: #2121de;
+  --yellow: #ffd400;
+  --pink: #ffb8ae;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #111;
+  display: grid;
+  place-items: center; 
+}
+
+.maze {
+  position: relative;   
+  width: 420px;
+  height: 500px;
+  background-color: var(--black);
+  border: 3px solid var(--blue);
+  border-radius: 10px;
+  overflow: hidden;
+  background-image: radial-gradient(circle, var(--pink) 2px, transparent 2.5px);
+  background-size: 20px 20px;
+}
+.wall {
+  position: absolute;
+  box-sizing: border-box;
+  left: calc(var(--x) * 20px + 16px);
+  top: calc(var(--y) * 20px + 16px);
+  width: calc(var(--w) * 20px - 12px);
+  height: calc(var(--h) * 20px - 12px);
+  background-color: var(--black); 
+  border: 3px solid var(--blue);
+  border-radius: 6px;
+}
+
+.house{
+  display: grid;
+  place-items: center;
+  font-family: "Courier New", monospace;
+  color: #aaa;
+  font-size: 16px;
+}
+
+.house::before {
+  content: "";
+  position: absolute;
+  background-color: #ffb8de;
+  top: -3px;
+  left: 38px;
+  width: 32px;
+  height: 3px;
+}
+
+.pacman {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  margin-top: -9px;   
+  margin-left: -9px;
+  animation: pac-run 10s linear infinite;
+}
+.half{
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 9px;
+  background-color: var(--yellow);
+  animation: chomp 0.25s ease-in-out infinite alternate;
+}
+
+.top {
+  top: 0;
+  border-radius: 18px 18px 0 0;
+  transform-origin: bottom center; 
+  --angle: -35deg;
+}
+
+.bottom{
+  top: 9px;
+  border-radius: 0 0 18px 18px;
+  transform-origin: top center;
+  --angle: 35deg;
+}
+
+@keyframes chomp{
+  from {
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(var(--angle));
+  }
+}
+
+@keyframes pac-run {
+  0% {
+    left: 30px;
+    top: 30px;
+    transform: rotate(0deg);
+  }
+  25%{
+    left: 390px;
+    top: 30px;
+    transform: rotate(0deg);
+  }
+  25.1% {
+    left: 390px;
+    top: 30px;
+    transform: rotate(90deg);
+  }
+  50% {
+    left: 390px;
+    top: 470px;
+    transform: rotate(90deg);
+  }
+  50.1%{
+    left: 390px;
+    top: 470px;
+    transform: rotate(180deg);
+  }
+  75% {
+    left: 30px;
+    top: 470px;
+    transform: rotate(180deg);
+  }
+  75.1% {
+    left: 30px;
+    top: 470px;
+    transform: rotate(270deg);
+  }
+  99.9% {
+    left: 30px;
+    top: 30px;
+    transform: rotate(270deg);
+  }
+  100%{
+    left: 30px;
+    top: 30px;
+    transform: rotate(0deg);
+  }
+}
+
+.ghost {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  margin-left: -9px;
+  background-color: var(--color);
+  border-radius: 9px 9px 0 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 83% 80%, 66% 100%, 50% 80%, 33% 100%, 16% 80%, 0 100%);
+  animation: loop 8s linear infinite;
+}
+
+.ghost::before,
+.ghost::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  width: 6px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 70% 55%, #1a1aff 0 1.5px, #fff 2px);
+}
+
+.ghost::before {
+  left: 2px;
+}
+.ghost::after{
+  left: 10px;
+}
+
+@keyframes loop {
+  0% {
+    left: var(--left);
+    top: var(--top);
+  }
+  25%{
+    left: var(--right);
+    top: var(--top);
+  }
+  50% {
+    left: var(--right);
+    top: var(--bottom);
+  }
+  75% {
+    left: var(--left);
+    top: var(--bottom);
+  }
+  100%{
+    left: var(--left);
+    top: var(--top);
+  }
+}
+
+.red {
+  --color: #ff0000;
+  --left: 30px;
+  --right: 390px;
+  --top: 30px;
+  --bottom: 470px;
+  animation-duration: 10s;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;  
+}
+
+.cyan{
+  --color: #00ffdd;
+  --left: 30px;
+  --right: 110px;
+  --top: 90px;
+  --bottom: 390px;
+  animation-duration: 6s;
+}
+.orange {
+  --color: #ffb852;
+  --left: 310px;
+  --right: 390px;
+  --top: 90px;
+  --bottom: 390px;
+  animation-duration: 6s;
+  animation-direction: reverse;
+}
+
+.purple{
+  --color: #b800ff;
+  --left: 110px;
+  --right: 310px;
+  --top: 90px;
+  --bottom: 390px;
+  animation-duration: 7s;
+  animation-direction: reverse;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .pacman,
+  .ghost,
+  .half {
+    animation: none;
+  }
+
+  .pacman {
+    left: 30px;
+    top: 30px;
+  }
+  .red,
+  .cyan {
+    left: 30px;
+    top: 90px;
+  }
+
+  .orange{
+    left: 390px;
+    top: 90px;
+  }
+
+  .purple {
+    left: 110px;
+    top: 90px;
+  }
+}
